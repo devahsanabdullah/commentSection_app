@@ -7,7 +7,8 @@ import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import moment from "moment/moment";
 import SendReply from "./SendReply";
-import { replyData } from "./SendQuestion";
+import {useDispatch} from 'react-redux'
+// import { replyData } from "./SendQuestion";
 
 type propstype = {
   data: string;
@@ -24,6 +25,7 @@ const ShowQuestion = (props: propstype) => {
   const [editReplyOPen, setEditReplyOpen] = useState<boolean>(false);
   const [editReplyid, setEditReplyId] = useState<number>();
   const [editReplyData, setEditReplyData] = useState<string>("");
+  const dispatch =useDispatch();
 
   useEffect(() => {
     const data = JSON.parse(`${localStorage.getItem("sendQuestion")}`);
@@ -50,6 +52,7 @@ const ShowQuestion = (props: propstype) => {
         return value;
       });
       localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+      dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
     }
   }
   function dislikeHandle(id: number) {
@@ -68,10 +71,12 @@ const ShowQuestion = (props: propstype) => {
     });
 
     localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+    dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
   }
   function handleRemove(id: number) {
     const values = showdata.filter((data) => data.id !== id);
     localStorage.setItem("sendQuestion", JSON.stringify(values));
+    dispatch({type:"VIEW_COMMENT",payload:{commentView:values}})
     setChange(!change);
   }
 
@@ -89,6 +94,7 @@ const ShowQuestion = (props: propstype) => {
       return data;
     });
     localStorage.setItem("sendQuestion", JSON.stringify(val));
+    dispatch({type:"VIEW_COMMENT",payload:{commentView:val}})
     setEditOpen(false);
   }
   function handleReply(id: number) {
@@ -108,6 +114,7 @@ const ShowQuestion = (props: propstype) => {
     });
 
     localStorage.setItem("sendQuestion", JSON.stringify(value));
+    dispatch({type:"VIEW_COMMENT",payload:{commentView:value}})
     setChange(!change);
   }
   function handleEditReply(replyid: number, dataId: number) {
@@ -128,6 +135,7 @@ const ShowQuestion = (props: propstype) => {
     });
 
     localStorage.setItem("sendQuestion", JSON.stringify(value));
+    dispatch({type:"VIEW_COMMENT",payload:{commentView:value}})
     setChange(!change);
     setEditReplyOpen(false);
   }
@@ -163,6 +171,7 @@ const ShowQuestion = (props: propstype) => {
         });
 
             localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+            dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
 
         }
         
@@ -201,6 +210,7 @@ const ShowQuestion = (props: propstype) => {
             return value;
         });
          localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+         dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
 
   }
   return (

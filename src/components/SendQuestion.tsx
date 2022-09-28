@@ -1,4 +1,6 @@
+import { type } from 'os'
 import React,{useEffect, useState}from 'react'
+import { useDispatch } from 'react-redux'
   export interface replyData{
   id:number,
   userName:string,
@@ -24,7 +26,7 @@ type propstype={
 const SendQuestion = (props:propstype) => {
 
 
-
+const dispatch =useDispatch();
   
   const [sendComment,setSendComment]=useState<ISend>({
     id:0,
@@ -48,6 +50,7 @@ const SendQuestion = (props:propstype) => {
       localStorage.setItem("sendQuestion", JSON.stringify([...data, sendComment]));
    
     }   
+     dispatch({type:"VIEW_COMMENT",payload:{commentView:sendComment}})
    
   }
   function generate() {
@@ -75,6 +78,7 @@ const SendQuestion = (props:propstype) => {
                     </div>
                 </div>
                 <div>
+                 
                   <textarea  placeholder='Add commment'  onChange={(e)=>setSendComment({comment:e.target.value,id:RandomNumber,userName:props.data,like:[],date:new Date(),reply:[]})} className=" w-[90%] md:w-[450px] h-[100px] resize-none m-6 p-3 font-bold text-base rounded-md  border-[#dfe3fa] border-solid border-2 focus:outline-none focus:border-[#7C5DFA]"/>
                 </div>
                 <div>

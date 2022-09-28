@@ -11,12 +11,6 @@ const initialState:initial= {
   
   const DataFilter = (state = initialState, action:any) => {
     switch(action.type){
-    case "USER_NAME":
-        return {
-            ...state,
-        userName:action.payload.userName,
-       
-    }
    
         case "VIEW_COMMENT":
             return {

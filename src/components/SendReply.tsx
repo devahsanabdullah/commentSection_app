@@ -1,7 +1,8 @@
 import { type } from '@testing-library/user-event/dist/type';
 import React, { useState,useEffect } from 'react'
-import {replyData} from '../components/SendQuestion'
-import {ISend} from '../components/SendQuestion'
+import {replyData} from './SendQuestion'
+import {ISend} from './SendQuestion'
+import {useDispatch} from 'react-redux'
 type  prototype= {
     data: string;
     replyId:number;
@@ -9,7 +10,7 @@ type  prototype= {
   };
   
 const SendReply = (props:prototype) => {
-
+  const dispatch =useDispatch();
     function generate() {
         let length = 3;
         const number = "1234567890";
@@ -54,6 +55,7 @@ const SendReply = (props:prototype) => {
             return data
         })
         localStorage.setItem("sendQuestion", JSON.stringify(newvalues));
+        dispatch({type:"VIEW_COMMENT",payload:{commentView:newvalues}})
         props.setOpenReply(false)
     }
   
