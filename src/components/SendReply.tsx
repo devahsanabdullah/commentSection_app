@@ -2,7 +2,8 @@ import { type } from '@testing-library/user-event/dist/type';
 import React, { useState,useEffect } from 'react'
 import {replyData} from './SendQuestion'
 import {ISend} from './SendQuestion'
-import {useDispatch} from 'react-redux'
+import {initial} from '../reducer/Reducer'
+import {useDispatch,useSelector} from 'react-redux'
 type  prototype= {
     data: string;
     replyId:number;
@@ -11,6 +12,8 @@ type  prototype= {
   
 const SendReply = (props:prototype) => {
   const dispatch =useDispatch();
+  const commentView=useSelector((state:initial)=>state.commentView)
+  
     function generate() {
         let length = 3;
         const number = "1234567890";
@@ -35,8 +38,8 @@ const SendReply = (props:prototype) => {
 
     useEffect(() => {
       
-        const data = JSON.parse(`${localStorage.getItem("sendQuestion")}`);
-        setShowData(data)
+        // const data = JSON.parse(`${localStorage.getItem("sendQuestion")}`);
+         setShowData(commentView)
       
     }, [])
     
@@ -54,7 +57,7 @@ const SendReply = (props:prototype) => {
             }
             return data
         })
-        localStorage.setItem("sendQuestion", JSON.stringify(newvalues));
+        // localStorage.setItem("sendQuestion", JSON.stringify(newvalues));
         dispatch({type:"VIEW_COMMENT",payload:{commentView:newvalues}})
         props.setOpenReply(false)
     }

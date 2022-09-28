@@ -1,6 +1,6 @@
 
 import { ISend } from "../components/SendQuestion";
-interface initial {
+ export interface initial {
     commentView:ISend[]
 }
 const initialState:initial= {
@@ -16,7 +16,7 @@ const initialState:initial= {
             return {
                 ...state,
 
-                commentView:[...state.commentView,action.payload.commentView]
+                commentView:action.payload.commentView
                 
                
             

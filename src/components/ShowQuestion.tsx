@@ -7,13 +7,15 @@ import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import moment from "moment/moment";
 import SendReply from "./SendReply";
-import {useDispatch} from 'react-redux'
+import {initial} from '../reducer/Reducer'
+import {useDispatch,useSelector} from 'react-redux'
 // import { replyData } from "./SendQuestion";
 
 type propstype = {
   data: string;
 };
 const ShowQuestion = (props: propstype) => {
+  const commentView=useSelector((state:initial)=>state.commentView)
   const [showdata, setShowData] = useState<ISend[]>([]);
   const [userData, setUserData] = useState<string>("");
   const [editOPen, setEditOpen] = useState<boolean>(false);
@@ -28,10 +30,10 @@ const ShowQuestion = (props: propstype) => {
   const dispatch =useDispatch();
 
   useEffect(() => {
-    const data = JSON.parse(`${localStorage.getItem("sendQuestion")}`);
-    const user = JSON.parse(`${localStorage.getItem("userName")}`);
-    setUserData(user);
-    setShowData(data);
+    // const data = JSON.parse(`${localStorage.getItem("sendQuestion")}`);
+    // const user = JSON.parse(`${localStorage.getItem("userName")}`);
+    // setUserData(user);
+    setShowData(commentView);
   }, [change]);
 
   function likeHandle(id: number) {
@@ -51,7 +53,7 @@ const ShowQuestion = (props: propstype) => {
         }
         return value;
       });
-      localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+      // localStorage.setItem("sendQuestion", JSON.stringify(valuess));
       dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
     }
   }
@@ -70,12 +72,13 @@ const ShowQuestion = (props: propstype) => {
       return value;
     });
 
-    localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+    // localStorage.setItem("sendQuestion", JSON.stringify(valuess));
     dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
   }
   function handleRemove(id: number) {
     const values = showdata.filter((data) => data.id !== id);
-    localStorage.setItem("sendQuestion", JSON.stringify(values));
+    console.log("🚀 ~ file: ShowQuestion.tsx ~ line 80 ~ handleRemove ~ values", values)
+    // localStorage.setItem("sendQuestion", JSON.stringify(values));
     dispatch({type:"VIEW_COMMENT",payload:{commentView:values}})
     setChange(!change);
   }
@@ -93,7 +96,7 @@ const ShowQuestion = (props: propstype) => {
       }
       return data;
     });
-    localStorage.setItem("sendQuestion", JSON.stringify(val));
+    // localStorage.setItem("sendQuestion", JSON.stringify(val));
     dispatch({type:"VIEW_COMMENT",payload:{commentView:val}})
     setEditOpen(false);
   }
@@ -113,7 +116,7 @@ const ShowQuestion = (props: propstype) => {
       return data;
     });
 
-    localStorage.setItem("sendQuestion", JSON.stringify(value));
+    // localStorage.setItem("sendQuestion", JSON.stringify(value));
     dispatch({type:"VIEW_COMMENT",payload:{commentView:value}})
     setChange(!change);
   }
@@ -134,7 +137,7 @@ const ShowQuestion = (props: propstype) => {
       return data;
     });
 
-    localStorage.setItem("sendQuestion", JSON.stringify(value));
+    // localStorage.setItem("sendQuestion", JSON.stringify(value));
     dispatch({type:"VIEW_COMMENT",payload:{commentView:value}})
     setChange(!change);
     setEditReplyOpen(false);
@@ -170,7 +173,7 @@ const ShowQuestion = (props: propstype) => {
             return value;
         });
 
-            localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+            // localStorage.setItem("sendQuestion", JSON.stringify(valuess));
             dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
 
         }
@@ -209,7 +212,7 @@ const ShowQuestion = (props: propstype) => {
             }
             return value;
         });
-         localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+        //  localStorage.setItem("sendQuestion", JSON.stringify(valuess));
          dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
 
   }
@@ -233,7 +236,8 @@ const ShowQuestion = (props: propstype) => {
                           </h1>
 
                           <h1 className=" font-bold text-[#5457b6]">
-                            {data.like.length}
+                          {data.like?.length===undefined||null? 0:data.like.length}
+                         
                           </h1>
                           <h1
                             className="font-bold text-2xl  text-gray-500 hover:text-[#5457b6] cursor-pointer"
@@ -385,7 +389,7 @@ const ShowQuestion = (props: propstype) => {
                                 </h1>
                                 <h1 className=" font-bold text-[#5457b6]">
                                     {replyData.like?.length===undefined||null? 0:replyData.like.length}
-                                  {/* {replyData.like.length && undefined||null?0:replyData.like.length} */}
+                                  
                                 </h1>
                                 <h1 className="font-bold text-2xl  text-gray-500 hover:text-[#5457b6] cursor-pointer" onClick={()=>handleDislikeReply(replyData.id, data.id)}>
                                   <AiFillCaretDown />

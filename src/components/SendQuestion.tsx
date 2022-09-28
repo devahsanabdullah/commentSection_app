@@ -1,6 +1,7 @@
 import { type } from 'os'
 import React,{useEffect, useState}from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
+import {initial} from '../reducer/Reducer'
   export interface replyData{
   id:number,
   userName:string,
@@ -27,6 +28,7 @@ const SendQuestion = (props:propstype) => {
 
 
 const dispatch =useDispatch();
+const commentView=useSelector((state:initial)=>state.commentView)
   
   const [sendComment,setSendComment]=useState<ISend>({
     id:0,
@@ -40,17 +42,17 @@ const dispatch =useDispatch();
   
   function handleSend (){
 
-    const data = JSON.parse(`${localStorage.getItem('sendQuestion')}`);
+    // const data = JSON.parse(`${localStorage.getItem('sendQuestion')}`);
    
    
-    if (data == null) {
-      localStorage.setItem("sendQuestion", JSON.stringify([sendComment]));
+    // if (data == null) {
+    //   localStorage.setItem("sendQuestion", JSON.stringify([sendComment]));
 
-    } else {
-      localStorage.setItem("sendQuestion", JSON.stringify([...data, sendComment]));
+    // } else {
+    //   localStorage.setItem("sendQuestion", JSON.stringify([...data, sendComment]));
    
-    }   
-     dispatch({type:"VIEW_COMMENT",payload:{commentView:sendComment}})
+    // }   
+     dispatch({type:"VIEW_COMMENT",payload:{commentView:[...commentView,sendComment]}})
    
   }
   function generate() {
