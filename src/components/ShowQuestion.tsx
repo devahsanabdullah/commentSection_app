@@ -102,7 +102,7 @@ const ShowQuestion = (props: propstype) => {
     });
     const value = showdata.map((data) => {
       if (data.id === dataId) {
-        data.reply = filterReply;
+        data.reply = filterReply!==0?[]:filterReply;
       }
       return data;
     });
@@ -135,7 +135,7 @@ const ShowQuestion = (props: propstype) => {
   {
     const newfilter = showdata.find((obj) => obj.id === dataId);
         const AccessReply:any= newfilter?.reply.find((data)=>data.id===replyid)
-        console.log("🚀 ~ file: ShowQuestion.tsx ~ line 138 ~ ShowQuestion ~  AccessReply",  AccessReply)
+       
         
     const newnewFilter: any = AccessReply?.like.filter(
       (obj: any) => obj === props.data
@@ -173,7 +173,34 @@ const ShowQuestion = (props: propstype) => {
   
   function handleDislikeReply(replyid: number, dataId: number)
   {
-    alert("Dis-Like")
+    
+    const newfilter = showdata.find((obj) => obj.id === dataId);
+        const AccessReply:any= newfilter?.reply.find((data)=>data.id===replyid)
+       
+        
+    const newnewFilter: any = AccessReply?.like.filter(
+      (obj: any) => obj !== props.data
+    );
+    
+
+    
+    const valuess:any = showdata.map((value) => {
+        if (value.id == dataId) {
+
+            value.reply.map((data)=>{
+                if(data.id===replyid)
+                {
+                    data.like = newnewFilter;
+                }
+                return data;
+            })
+            
+           
+
+            }
+            return value;
+        });
+         localStorage.setItem("sendQuestion", JSON.stringify(valuess));
 
   }
   return (
