@@ -9,7 +9,7 @@ const initialState:initial= {
         
   }
   
-  const DataFilter = (state = initialState, action:any) => {
+  const DataFilter = (state:any = initialState, action:any) => {
     switch(action.type){
    
         case "VIEW_COMMENT":

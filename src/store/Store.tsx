@@ -11,12 +11,15 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
  import DataFilter from '../reducer/Reducer';
+ import { getPersistConfig } from 'redux-deep-persist';
 
-const persistConfig = {
+const persistConfig:any = getPersistConfig ({
     key: 'root',
     storage:storage,
-    whitelist: ['commentView']
-  }
+    whitelist: ['commentView.id','commentView.userName','commentView.comment','commentView.like','commentView.date','commentView.reply'],
+    rootReducer:DataFilter
+
+  })
   const persistedReducer = persistReducer(persistConfig, DataFilter)
  
    const store = configureStore( {reducer: persistedReducer,
