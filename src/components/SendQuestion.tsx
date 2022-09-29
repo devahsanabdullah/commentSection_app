@@ -1,6 +1,7 @@
 import { type } from 'os'
 import React,{useEffect, useState}from 'react'
 import { useDispatch,useSelector } from 'react-redux'
+import { textSpanContainsTextSpan } from 'typescript'
 import {initial} from '../reducer/Reducer'
   export interface replyData{
   id:number,
@@ -29,7 +30,7 @@ const SendQuestion = (props:propstype) => {
 
   const changeable = useSelector((state:initial) => state.changeData)
 const dispatch =useDispatch();
-// const commentView=useSelector((state:initial)=>state.commentView)
+ const commentView=useSelector((state:initial)=>state.commentView)
   const [showdata, setShowData] = useState<ISend[]>([]);
   
   const [sendComment,setSendComment]=useState<ISend>({
@@ -41,34 +42,29 @@ const dispatch =useDispatch();
     reply:[]
   });
  
-  // useEffect(() => {
+  useEffect(() => {
     
-  //   setShowData(commentView);
-  // }, [change]);
+    setShowData(commentView);
+  }, [changeable]);
 
   function handleSend (){
 
-    const data = JSON.parse(`${localStorage.getItem('sendQuestion')}`);
+    // const data = JSON.parse(`${localStorage.getItem('sendQuestion')}`);
    
    
-    if (data == null) {
-      localStorage.setItem("sendQuestion", JSON.stringify([sendComment]));
+    // if (data == null) {
+    //   localStorage.setItem("sendQuestion", JSON.stringify([sendComment]));
 
-    } else {
-      localStorage.setItem("sendQuestion", JSON.stringify([...data, sendComment]));
+    // } else {
+    //   localStorage.setItem("sendQuestion", JSON.stringify([...data, sendComment]));
    
-    }   
+    // }   
    
     dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
-    setSendComment({id:0,
-      userName:"",
-      comment:"",
-     like:[],
-      date:new Date(),
-      reply:[]})
-    //  dispatch({type:"VIEW_COMMENT",payload:{commentView:[...showdata,sendComment]}})
+  
+       dispatch({type:"VIEW_COMMENT",payload:{commentView:[...showdata,sendComment]}})
     //  setChange(!change);
-   
+  
   }
   function generate() {
     let length = 3;
@@ -81,6 +77,23 @@ const dispatch =useDispatch();
     return parseInt(result) ;
   }
   const RandomNumber= generate()
+
+
+  function setState(e:React.ChangeEvent<HTMLTextAreaElement>)
+  {
+    setSendComment({comment:e.target.value,id:RandomNumber,userName:props.data,like:[],date:new Date(),reply:[]})
+  }
+function cleardata()
+{
+  setSendComment({
+    id:0,
+    userName:"",
+    comment:"",
+   like:[],
+    date:new Date(),
+    reply:[]
+  })
+}
   return (
 <>
 <div className='flex justify-center '>
@@ -89,17 +102,17 @@ const dispatch =useDispatch();
             <div className=' flex flex-col-reverse md:flex-row justify-between'>
                 <div>
                   <div className='flex justify-between'>
-                    <img src='/images/ahsan.png' className='w-20 ml-5 h-20 rounded-lg p-3'/>
+                    <img src='/images/img1 (1).png' className='w-20 ml-5 h-20 rounded-lg p-3'/>
                   
                     <button className='m-6 lg:hidden md:hidden block bg-[#5457b6] text-white p-3 w-24 text-xl font-bold rounded-xl hover:bg-[#b0b2ec]'>Send</button>
                     </div>
                 </div>
                 <div>
                  
-                  <textarea  placeholder='Add commment'  onChange={(e)=>setSendComment({comment:e.target.value,id:RandomNumber,userName:props.data,like:[],date:new Date(),reply:[]})} className=" w-[90%] md:w-[450px] h-[100px] resize-none m-6 p-3 font-bold text-base rounded-md  border-[#dfe3fa] border-solid border-2 focus:outline-none focus:border-[#7C5DFA]"/>
+                  <textarea  placeholder='Add commment'  onChange={setState} value={sendComment.comment} id='comment' className=" w-[90%] md:w-[450px] h-[100px] resize-none m-6 p-3 font-bold text-base rounded-md  border-[#dfe3fa] border-solid border-2 focus:outline-none focus:border-[#7C5DFA]"/>
                 </div>
                 <div>
-                    <button className='m-6 md:block hidden bg-[#5457b6] text-white p-3 w-24 text-xl font-bold rounded-xl hover:bg-[#b0b2ec] cursor-pointer' onClick={() => handleSend()}>Send</button>
+                    <button className='m-6 md:block hidden bg-[#5457b6] text-white p-3 w-24 text-xl font-bold rounded-xl hover:bg-[#b0b2ec] cursor-pointer' onClick={() => {handleSend();cleardata()}}>Send</button>
                 </div>
             </div>
         </div>

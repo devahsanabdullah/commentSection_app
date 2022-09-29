@@ -31,8 +31,8 @@ const Login = () => {
     <div className=' '>
   <div className='flex justify-center items-center'>
 
-    <div className='shadow-lg h-3/5 w-96 flex flex-col rounded-2xl mt-10 '>
-        <h1 className='text-center font-extrabold p-8  text-3xl '>Login</h1>
+    <div className='   h-3/5 w-96 flex flex-col rounded-2xl mt-10 ' style={{backgroundColor:"rgba(41, 39, 39, 0.3)",boxShadow: " -3px -3px 9px #aaa9a9a2"}}>
+        <h1 className='text-center font-extrabold p-8  text-3xl text-[#f7fff9]'>Login</h1>
 <Formik  
        enableReinitialize
        initialValues={{ username: "" ,
@@ -41,7 +41,7 @@ const Login = () => {
        validationSchema={SinupValdation}
        onSubmit={(values, actions) => {
     
-           alert(JSON.stringify(values, null, 2));
+          //  alert(JSON.stringify(values, null, 2));
            const data = JSON.parse(`${localStorage.getItem('userName')}`);
            localStorage.setItem("userName", JSON.stringify(values.username));
           //  if (data == null) {
@@ -62,13 +62,13 @@ const Login = () => {
          <Form onSubmit={handleSubmit}>
             <div className='grid grid-cols-1 px-16 '>
                 <div>
-                    <p className='text-black text-lg py-3'>Username</p>
+                    <p className='text-[#f7fff9] text-lg py-3'>Username</p>
                 
             <Field  name="username" className={styles} />
             {/* style={getStyles(errors, `username`)} */}
             </div>
             <div>
-            <p className='text-black text-lg py-3'>Password</p>
+            <p className='text-[#f7fff9] text-lg py-3'>Password</p>
             
             <Field  name="password" type="password" className={styles}  />
             </div>

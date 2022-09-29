@@ -14,7 +14,7 @@ const SendReply = (props:prototype) => {
 
 
   const changeable = useSelector((state:initial) => state.changeData)
-
+  const commentView=useSelector((state:initial)=>state.commentView)
   const dispatch =useDispatch();
   const [change, setChange] = useState<boolean>(changeable);
  
@@ -43,10 +43,11 @@ const SendReply = (props:prototype) => {
     const RandomNumber= generate()
     useEffect(() => {
       
-         const data = JSON.parse(`${localStorage.getItem("sendQuestion")}`);
+        //  const data = JSON.parse(`${localStorage.getItem("sendQuestion")}`);
+        let data=JSON.parse(JSON.stringify(commentView))
          setShowData(data)
       
-    }, [])
+    }, [changeable])
     
 
     function handleSend()
@@ -63,12 +64,14 @@ const SendReply = (props:prototype) => {
                 // setChange(!change);
 
             }
+       
             return data
         })
         console.log("🚀 ~ file: SendReply.tsx ~ line 68 ~ newvalues ~ newvalues", newvalues)
+        dispatch({type:"VIEW_COMMENT",payload:{commentView:newvalues}})
         dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
-         localStorage.setItem("sendQuestion", JSON.stringify(newvalues));
-        // dispatch({type:"VIEW_COMMENT",payload:{commentView:newvalues}})
+        //  localStorage.setItem("sendQuestion", JSON.stringify(newvalues));
+        
         props.setOpenReply(false)
     }
   

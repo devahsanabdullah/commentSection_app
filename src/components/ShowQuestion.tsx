@@ -15,7 +15,7 @@ type propstype = {
   data: string;
 };
 const ShowQuestion = (props: propstype) => {
-  // const commentView=useSelector((state:initial)=>state.commentView)
+   const commentView=useSelector((state:initial)=>state.commentView)
   const changeable = useSelector((state:initial) => state.changeData)
   const [showdata, setShowData] = useState<ISend[]>([]);
   const [userData, setUserData] = useState<string>("");
@@ -32,9 +32,10 @@ const ShowQuestion = (props: propstype) => {
 
 
   useEffect(() => {
-    const data = JSON.parse(`${localStorage.getItem("sendQuestion")}`);
-    const user = JSON.parse(`${localStorage.getItem("userName")}`);
-    setUserData(user);
+    // const data = JSON.parse(`${localStorage.getItem("sendQuestion")}`);
+    // const user = JSON.parse(`${localStorage.getItem("userName")}`);
+    let data=JSON.parse(JSON.stringify(commentView))
+    // setUserData(user);
     setShowData(data);
   }, [changeable]);
 
@@ -56,8 +57,8 @@ const ShowQuestion = (props: propstype) => {
         }
         return value;
       });
-      localStorage.setItem("sendQuestion", JSON.stringify(valuess));
-      // dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
+      // localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+       dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
     }
   }
   function dislikeHandle(id: number) {
@@ -76,15 +77,15 @@ const ShowQuestion = (props: propstype) => {
       return value;
     });
 
-    localStorage.setItem("sendQuestion", JSON.stringify(valuess));
-    // dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
+    // localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+     dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
   }
   function handleRemove(id: number) {
     const values = showdata.filter((data) => data.id !== id);
     dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
 
-    localStorage.setItem("sendQuestion", JSON.stringify(values));
-    // dispatch({type:"VIEW_COMMENT",payload:{commentView:values}})
+    // localStorage.setItem("sendQuestion", JSON.stringify(values));
+    dispatch({type:"VIEW_COMMENT",payload:{commentView:values}})
     // setChange(!change);
   }
 
@@ -103,8 +104,8 @@ const ShowQuestion = (props: propstype) => {
       }
       return data;
     });
-    localStorage.setItem("sendQuestion", JSON.stringify(val));
-    // dispatch({type:"VIEW_COMMENT",payload:{commentView:val}})
+    // localStorage.setItem("sendQuestion", JSON.stringify(val));
+     dispatch({type:"VIEW_COMMENT",payload:{commentView:val}})
     setEditOpen(false);
   }
   function handleReply(id: number) {
@@ -112,36 +113,62 @@ const ShowQuestion = (props: propstype) => {
     setOpenReply(true);
   }
   function handleRemoveReply(replyid: number, dataId: number) {
-    console.log("🚀 ~ file: ShowQuestion.tsx ~ line 116 ~ handleRemoveReply ~ showdata", showdata)
-    const val: any = showdata.filter((data) => {
+
+    
+   
+  
+    // const val:any = showdata.filter((data) => {
       
-      return data.id === dataId
-    })
-    console.log("🚀 ~ file: ShowQuestion.tsx ~ line 116 ~ handleRemoveReply ~ val", val)
-    const filterReply = val.map((data: ISend) => {
-      return data.reply.filter((data) => data.id !== replyid);
-    });
-    console.log("🚀 ~ file: ShowQuestion.tsx ~ line 119 ~ filterReply ~ filterReply", filterReply)
-    const value = showdata.map((data) => {
-      if (data.id === dataId) {
-        data.reply = filterReply!==0?[]:filterReply;
+    //   return data.id === dataId
+    // })
+  
+    // const filterReply = val.map((data: ISend) => {
+    //   return data.reply.filter((data) => data.id !== replyid);
+    // });
+    // console.log("🚀 ~ file: ShowQuestion.tsx ~ line 128 ~ filterReply ~ filterReply", filterReply)
+   
+    // const value = showdata.map((data) => {
+    //   if (data.id === dataId) {
+    //     // console.log("asa",data.reply)
+    //     // data.reply = filterReply!==0?[]:filterReply;
+    //     const val=data.reply.filter((data)=>data.id!==replyid)
+    //     return val;
        
-      }
-      return data;
-    });
-    console.log("🚀 ~ file: ShowQuestion.tsx ~ line 126 ~ value ~  value",  value)
-    // dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
+    //   }
+    //   return data
+    // });
+    // console.log("🚀 ~ file: ShowQuestion.tsx ~ line 136 ~ value ~ value", value)
+   
+    //  dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
 
     // localStorage.setItem("sendQuestion", JSON.stringify(value));
     // dispatch({type:"VIEW_COMMENT",payload:{commentView:value}})
     // setChange(!change);
+
+
+    console.log(replyid)
+
+    const val=showdata.map((obj)=>{
+      if(obj.id===dataId)
+      {
+        obj.reply=obj.reply.filter((f)=>(f.id!==replyid))
+        console.log(obj.reply)
+      }
+      return obj;
+    })
+    let data=JSON.parse(JSON.stringify(val))
+    dispatch({type:"VIEW_COMMENT",payload:{commentView:data}})
+     dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
+
   }
   function handleEditReply(replyid: number, dataId: number) {
     setEditReplyId(replyid);
     setEditReplyOpen(true);
   }
   function handleEditReplyUpdate(replyid: number, dataId: number) {
+    console.log("🚀 ~ file: ShowQuestion.tsx ~ line 145 ~ value ~ howdata", showdata)
     const value = showdata.map((data) => {
+
       if (data.id === dataId) {
         data.reply.map((data) => {
           if (data.id === replyid) {
@@ -155,8 +182,8 @@ const ShowQuestion = (props: propstype) => {
       return data;
     });
 
-    localStorage.setItem("sendQuestion", JSON.stringify(value));
-    // dispatch({type:"VIEW_COMMENT",payload:{commentView:value}})
+    // localStorage.setItem("sendQuestion", JSON.stringify(value));
+    dispatch({type:"VIEW_COMMENT",payload:{commentView:value}})
     // setChange(!change);
     setEditReplyOpen(false);
   }
@@ -193,8 +220,8 @@ const ShowQuestion = (props: propstype) => {
             return value;
         });
 
-            localStorage.setItem("sendQuestion", JSON.stringify(valuess));
-            // dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
+            // localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+             dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
 
         }
         
@@ -232,8 +259,8 @@ const ShowQuestion = (props: propstype) => {
             }
             return value;
         });
-         localStorage.setItem("sendQuestion", JSON.stringify(valuess));
-        //  dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
+        //  localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+         dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
 
   }
   return (
@@ -244,9 +271,9 @@ const ShowQuestion = (props: propstype) => {
             <>
               <div className="flex justify-center ">
                 <div className="shadow-lg w-[800px] bg-white  p-5 mt-7 rounded-xl">
-                  <div className="flex flex-col-reverse md:flex-row ">
-                    <div>
-                      <div className="flex justify-between  ">
+                  <div className="flex flex-col-reverse w-full md:flex-row ">
+                  <div>
+                      <div className=" flex justify-between ">
                         <div className="shadow-lg bg-gray-100  p-2 flex  w-20 items-center  md:flex-col md:w-9 md:m-3 md:p-3 rounded-xl">
                           <h1
                             className="font-bold text-2xl text-gray-500 hover:text-[#5457b6] cursor-pointer"
@@ -267,7 +294,7 @@ const ShowQuestion = (props: propstype) => {
                           </h1>
                         </div>
                         {data.userName === props.data ? (
-                          <div className="lg:hidden md:hidden block">
+                          <div className=" md:hidden block">
                             <div className="flex justify-center items-center">
                               <MdDelete className="text-xl font-bold ml-1 text-red-500  " />
                               <h1
@@ -301,13 +328,13 @@ const ShowQuestion = (props: propstype) => {
                       </div>
                     </div>
 
-                    <div>
+                    <div className="grow">
                       <div className="flex flex-col">
                         <div className="flex justify-between">
                           <div className="flex">
                             <img
-                              src="/images/ahsan.png"
-                              className="w-8 h-8  rounded-lg"
+                              src="/images/img1 (1).png"
+                              className="w-10 h-10  rounded-lg"
                             />
                             <h1 className="text-lg font-bold pl-3 ">
                               {data.userName}
@@ -394,12 +421,17 @@ const ShowQuestion = (props: propstype) => {
                   setOpenReply={setOpenReply}
                 />
               ) : null}
-              {/* Reply data shoe that body  start */}
+
+<div className='flex justify-center'>
+    <div className="flex md:ml-20 divide-gray-300 divide-x-4">
+      <div></div>
+      <div className='col-span-3 ml-10'>
+          {/* Reply data shoe that body  start */}
               {data.reply &&
                 data.reply.map((replyData) => {
                   return (
                     <div className="flex justify-center ml-10">
-                      <div className="shadow-lg w-[750px] bg-white  p-5 mt-7 rounded-xl">
+                      <div className="shadow-lg w-[700px] bg-white  p-5 mt-7 rounded-xl">
                         <div className="flex flex-col-reverse md:flex-row ">
                           <div>
                             <div className="flex justify-between  ">
@@ -444,20 +476,22 @@ const ShowQuestion = (props: propstype) => {
                           </div>
 
                           <div>
+                          <div className="grow">
                             <div className="flex flex-col">
                               <div className="flex justify-between">
                                 <div className="flex">
                                   <img
-                                    src="/images/ahsan.png"
-                                    className="w-8 h-8  rounded-lg"
+                                    src="/images/img1 (2).png"
+                                    className="w-10 h-9  rounded-lg"
                                   />
                                   <h1 className="text-lg font-bold pl-3 ">
-                                    amyrobson
+                                    {replyData.userName}
                                   </h1>
                                   <p className="text-lg text-gray-500 pl-3 ">
                                     {moment(replyData.date).fromNow()}
                                   </p>
                                 </div>
+                                {replyData.userName===props.data?
                                 <div className=" md:block hidden text-end">
                                   <div className="flex justify-center items-center">
                                     <MdDelete className="text-xl font-bold ml-1 text-red-500  " />
@@ -483,6 +517,7 @@ const ShowQuestion = (props: propstype) => {
                                     </div>
                                   </div>
                                 </div>
+                                :null}
                               </div>
                               <div>
                                 {replyData.id === editReplyid &&
@@ -515,13 +550,17 @@ const ShowQuestion = (props: propstype) => {
                                 )}
                               </div>
                             </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   );
                 })}
-              
+               </div>
+    </div>
+    </div>
+          
             </>
           );
         })}

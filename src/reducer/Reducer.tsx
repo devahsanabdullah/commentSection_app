@@ -14,13 +14,20 @@ const initialState:initial= {
   const DataFilter = (state:any = initialState, action:any) => {
     switch(action.type){
    
-        // case "VIEW_COMMENT":
-        //     return {
-        //         ...state,
+        case "VIEW_COMMENT":
+            return {
+                ...state,
 
-        //         commentView:action.payload.commentView
+                commentView:action.payload.commentView
             
-        //     }
+            }
+            case "REPLY_COMMENT":
+            return {
+                ...state,
+
+                commentView:action.payload.commentView
+            
+            }
                case "REFRESH_DATA":
             return {
                 ...state,

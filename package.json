@@ -21,6 +21,7 @@
     "react-scripts": "5.0.1",
     "redux": "^4.2.0",
     "redux-deep-persist": "^1.0.6",
+    "redux-immer": "^1.0.5",
     "redux-persist": "^6.0.0",
     "redux-persist-transform-immutable": "^5.0.0",
     "typescript": "^4.8.3",
