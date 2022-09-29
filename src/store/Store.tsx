@@ -11,15 +11,17 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
  import DataFilter from '../reducer/Reducer';
+ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
  import { getPersistConfig } from 'redux-deep-persist';
 
-const persistConfig:any = getPersistConfig ({
+
+const persistConfig = {
     key: 'root',
     storage:storage,
-    whitelist: ['commentView.id','commentView.userName','commentView.comment','commentView.like','commentView.date','commentView.reply'],
-    rootReducer:DataFilter
+    whitelist: [''],
+    stateReconciler: autoMergeLevel2
 
-  })
+  }
   const persistedReducer = persistReducer(persistConfig, DataFilter)
  
    const store = configureStore( {reducer: persistedReducer,

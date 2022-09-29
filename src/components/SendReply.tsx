@@ -11,20 +11,15 @@ type  prototype= {
   };
   
 const SendReply = (props:prototype) => {
+
+
+  const changeable = useSelector((state:initial) => state.changeData)
+
   const dispatch =useDispatch();
-  const commentView=useSelector((state:initial)=>state.commentView)
+  const [change, setChange] = useState<boolean>(changeable);
+ 
   
-    function generate() {
-        let length = 3;
-        const number = "1234567890";
-        let result = " ";
-        const numberLenght = number.length;
-        for (let i = 0; i < length; i++) {
-          result += number.charAt(Math.floor(Math.random() * numberLenght));
-        }
-        return parseInt(result) ;
-      }
-      const RandomNumber= generate()
+    
     
       const [showdata, setShowData] = useState<ISend[]>([]);
     const [replyComment,setReplyComment]=useState<replyData>({
@@ -35,11 +30,21 @@ const SendReply = (props:prototype) => {
         date: new Date,
 
     });
-
+    function generate() {
+      let length = 3;
+      const number = "1234567890";
+      let result = " ";
+      const numberLenght = number.length;
+      for (let i = 0; i < length; i++) {
+        result += number.charAt(Math.floor(Math.random() * numberLenght));
+      }
+      return parseInt(result) ;
+    }
+    const RandomNumber= generate()
     useEffect(() => {
       
-        // const data = JSON.parse(`${localStorage.getItem("sendQuestion")}`);
-         setShowData(commentView)
+         const data = JSON.parse(`${localStorage.getItem("sendQuestion")}`);
+         setShowData(data)
       
     }, [])
     
@@ -48,17 +53,22 @@ const SendReply = (props:prototype) => {
     {
        
         const value = showdata.find((data)=>data.id===props.replyId)
+        console.log("🚀 ~ file: SendReply.tsx ~ line 51 ~ SendReply ~ value", value)
         const valfilter:any =value?.reply.map((data)=>data)
         const newvalues = showdata.map((data)=>{
             if(data.id===props.replyId)
             {
                 data.reply=[...valfilter,replyComment]
+                
+                // setChange(!change);
 
             }
             return data
         })
-        // localStorage.setItem("sendQuestion", JSON.stringify(newvalues));
-        dispatch({type:"VIEW_COMMENT",payload:{commentView:newvalues}})
+        console.log("🚀 ~ file: SendReply.tsx ~ line 68 ~ newvalues ~ newvalues", newvalues)
+        dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
+         localStorage.setItem("sendQuestion", JSON.stringify(newvalues));
+        // dispatch({type:"VIEW_COMMENT",payload:{commentView:newvalues}})
         props.setOpenReply(false)
     }
   

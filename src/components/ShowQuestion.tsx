@@ -15,10 +15,11 @@ type propstype = {
   data: string;
 };
 const ShowQuestion = (props: propstype) => {
-  const commentView=useSelector((state:initial)=>state.commentView)
+  // const commentView=useSelector((state:initial)=>state.commentView)
+  const changeable = useSelector((state:initial) => state.changeData)
   const [showdata, setShowData] = useState<ISend[]>([]);
   const [userData, setUserData] = useState<string>("");
-  const [editOPen, setEditOpen] = useState<boolean>(false);
+  const [editOPen, setEditOpen] = useState<boolean>(changeable);
   const [editid, setEditId] = useState<number>();
   const [editData, setEditData] = useState<string>("");
   const [replyOpen, setOpenReply] = useState(false);
@@ -29,12 +30,13 @@ const ShowQuestion = (props: propstype) => {
   const [editReplyData, setEditReplyData] = useState<string>("");
   const dispatch =useDispatch();
 
+
   useEffect(() => {
-    // const data = JSON.parse(`${localStorage.getItem("sendQuestion")}`);
-    // const user = JSON.parse(`${localStorage.getItem("userName")}`);
-    // setUserData(user);
-    setShowData(commentView);
-  }, [change]);
+    const data = JSON.parse(`${localStorage.getItem("sendQuestion")}`);
+    const user = JSON.parse(`${localStorage.getItem("userName")}`);
+    setUserData(user);
+    setShowData(data);
+  }, [changeable]);
 
   function likeHandle(id: number) {
     const newfilter: any = showdata.find((obj) => obj.id === id);
@@ -49,12 +51,13 @@ const ShowQuestion = (props: propstype) => {
       const valuess = showdata.map((value) => {
         if (value.id == id) {
           value.like = [...newfilter.like, props.data];
-          setChange(!change);
+          dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
+          // setChange(!change);
         }
         return value;
       });
-      // localStorage.setItem("sendQuestion", JSON.stringify(valuess));
-      dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
+      localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+      // dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
     }
   }
   function dislikeHandle(id: number) {
@@ -67,37 +70,41 @@ const ShowQuestion = (props: propstype) => {
     const valuess = showdata.map((value) => {
       if (value.id == id) {
         value.like = newnewFilter;
-        setChange(!change);
+        dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
+        // setChange(!change);
       }
       return value;
     });
 
-    // localStorage.setItem("sendQuestion", JSON.stringify(valuess));
-    dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
+    localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+    // dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
   }
   function handleRemove(id: number) {
     const values = showdata.filter((data) => data.id !== id);
-    console.log("🚀 ~ file: ShowQuestion.tsx ~ line 80 ~ handleRemove ~ values", values)
-    // localStorage.setItem("sendQuestion", JSON.stringify(values));
-    dispatch({type:"VIEW_COMMENT",payload:{commentView:values}})
-    setChange(!change);
+    dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
+
+    localStorage.setItem("sendQuestion", JSON.stringify(values));
+    // dispatch({type:"VIEW_COMMENT",payload:{commentView:values}})
+    // setChange(!change);
   }
 
   function handleEdit(id: number) {
     setEditOpen(true);
     setEditId(id);
-    setChange(!change);
+    dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
+    // setChange(!change);
   }
   function handleUpdate(id: number) {
     const val = showdata.map((data) => {
       if (data.id === id) {
         data.comment = editData;
-        setChange(!change);
+        dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
+        // setChange(!change);
       }
       return data;
     });
-    // localStorage.setItem("sendQuestion", JSON.stringify(val));
-    dispatch({type:"VIEW_COMMENT",payload:{commentView:val}})
+    localStorage.setItem("sendQuestion", JSON.stringify(val));
+    // dispatch({type:"VIEW_COMMENT",payload:{commentView:val}})
     setEditOpen(false);
   }
   function handleReply(id: number) {
@@ -105,20 +112,29 @@ const ShowQuestion = (props: propstype) => {
     setOpenReply(true);
   }
   function handleRemoveReply(replyid: number, dataId: number) {
-    const val: any = showdata.filter((data) => data.id === dataId);
+    console.log("🚀 ~ file: ShowQuestion.tsx ~ line 116 ~ handleRemoveReply ~ showdata", showdata)
+    const val: any = showdata.filter((data) => {
+      
+      return data.id === dataId
+    })
+    console.log("🚀 ~ file: ShowQuestion.tsx ~ line 116 ~ handleRemoveReply ~ val", val)
     const filterReply = val.map((data: ISend) => {
       return data.reply.filter((data) => data.id !== replyid);
     });
+    console.log("🚀 ~ file: ShowQuestion.tsx ~ line 119 ~ filterReply ~ filterReply", filterReply)
     const value = showdata.map((data) => {
       if (data.id === dataId) {
         data.reply = filterReply!==0?[]:filterReply;
+       
       }
       return data;
     });
+    console.log("🚀 ~ file: ShowQuestion.tsx ~ line 126 ~ value ~  value",  value)
+    // dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
 
     // localStorage.setItem("sendQuestion", JSON.stringify(value));
-    dispatch({type:"VIEW_COMMENT",payload:{commentView:value}})
-    setChange(!change);
+    // dispatch({type:"VIEW_COMMENT",payload:{commentView:value}})
+    // setChange(!change);
   }
   function handleEditReply(replyid: number, dataId: number) {
     setEditReplyId(replyid);
@@ -130,6 +146,8 @@ const ShowQuestion = (props: propstype) => {
         data.reply.map((data) => {
           if (data.id === replyid) {
             data.comment = editReplyData;
+            dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
+            // setChange(!change);
           }
           return data;
         });
@@ -137,9 +155,9 @@ const ShowQuestion = (props: propstype) => {
       return data;
     });
 
-    // localStorage.setItem("sendQuestion", JSON.stringify(value));
-    dispatch({type:"VIEW_COMMENT",payload:{commentView:value}})
-    setChange(!change);
+    localStorage.setItem("sendQuestion", JSON.stringify(value));
+    // dispatch({type:"VIEW_COMMENT",payload:{commentView:value}})
+    // setChange(!change);
     setEditReplyOpen(false);
   }
   function handleLikeReply(replyid: number, dataId: number)
@@ -163,6 +181,8 @@ const ShowQuestion = (props: propstype) => {
                 if(data.id===replyid)
                 {
                     data.like = [...AccessReply?.like, props.data];
+                    dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
+                    // setChange(!change);
                 }
                 return data;
             })
@@ -173,8 +193,8 @@ const ShowQuestion = (props: propstype) => {
             return value;
         });
 
-            // localStorage.setItem("sendQuestion", JSON.stringify(valuess));
-            dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
+            localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+            // dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
 
         }
         
@@ -206,14 +226,14 @@ const ShowQuestion = (props: propstype) => {
                 }
                 return data;
             })
-            
-           
+            // setChange(!change);
+            dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
 
             }
             return value;
         });
-        //  localStorage.setItem("sendQuestion", JSON.stringify(valuess));
-         dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
+         localStorage.setItem("sendQuestion", JSON.stringify(valuess));
+        //  dispatch({type:"VIEW_COMMENT",payload:{commentView:valuess}})
 
   }
   return (

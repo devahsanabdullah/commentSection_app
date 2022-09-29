@@ -25,10 +25,12 @@ type propstype={
 }
 
 const SendQuestion = (props:propstype) => {
+  const [change, setChange] = useState<boolean>(false);
 
-
+  const changeable = useSelector((state:initial) => state.changeData)
 const dispatch =useDispatch();
-const commentView=useSelector((state:initial)=>state.commentView)
+// const commentView=useSelector((state:initial)=>state.commentView)
+  const [showdata, setShowData] = useState<ISend[]>([]);
   
   const [sendComment,setSendComment]=useState<ISend>({
     id:0,
@@ -39,20 +41,33 @@ const commentView=useSelector((state:initial)=>state.commentView)
     reply:[]
   });
  
-  
+  // useEffect(() => {
+    
+  //   setShowData(commentView);
+  // }, [change]);
+
   function handleSend (){
 
-    // const data = JSON.parse(`${localStorage.getItem('sendQuestion')}`);
+    const data = JSON.parse(`${localStorage.getItem('sendQuestion')}`);
    
    
-    // if (data == null) {
-    //   localStorage.setItem("sendQuestion", JSON.stringify([sendComment]));
+    if (data == null) {
+      localStorage.setItem("sendQuestion", JSON.stringify([sendComment]));
 
-    // } else {
-    //   localStorage.setItem("sendQuestion", JSON.stringify([...data, sendComment]));
+    } else {
+      localStorage.setItem("sendQuestion", JSON.stringify([...data, sendComment]));
    
-    // }   
-     dispatch({type:"VIEW_COMMENT",payload:{commentView:[...commentView,sendComment]}})
+    }   
+   
+    dispatch({type:"REFRESH_DATA",payload:{changeData:!changeable}})
+    setSendComment({id:0,
+      userName:"",
+      comment:"",
+     like:[],
+      date:new Date(),
+      reply:[]})
+    //  dispatch({type:"VIEW_COMMENT",payload:{commentView:[...showdata,sendComment]}})
+    //  setChange(!change);
    
   }
   function generate() {
