@@ -431,7 +431,7 @@ const ShowQuestion = (props: propstype) => {
                 data.reply.map((replyData) => {
                   return (
                     <div className="flex justify-center ml-10">
-                      <div className="shadow-lg w-[700px] bg-white  p-5 mt-7 rounded-xl">
+                      <div className="shadow-lg w-[300px] lg:w-[700px] md:w-[650px] bg-white  p-5 mt-7 rounded-xl">
                         <div className="flex flex-col-reverse md:flex-row ">
                           <div>
                             <div className="flex justify-between  ">
@@ -475,7 +475,7 @@ const ShowQuestion = (props: propstype) => {
                             </div>
                           </div>
 
-                          <div>
+                          <div className="w-full">
                           <div className="grow">
                             <div className="flex flex-col">
                               <div className="flex justify-between">

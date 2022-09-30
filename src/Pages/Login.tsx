@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Field, Form, Formik,getIn } from 'formik';
+import { Field, Form, Formik,getIn ,FormikProps, FormikErrors} from 'formik';
 import {SinupValdation} from '../components/validation'
 import {Link,useNavigate} from "react-router-dom"
 
@@ -31,8 +31,8 @@ const Login = () => {
     <div className=' '>
   <div className='flex justify-center items-center'>
 
-    <div className='   h-3/5 w-96 flex flex-col rounded-2xl mt-10 ' style={{backgroundColor:"rgba(41, 39, 39, 0.3)",boxShadow: " -3px -3px 9px #aaa9a9a2"}}>
-        <h1 className='text-center font-extrabold p-8  text-3xl text-[#f7fff9]'>Login</h1>
+    <div className='   h-3/5 w-96 flex flex-col rounded-2xl mt-24 ' style={{backgroundColor:"rgba(41, 39, 39, 0.3)",boxShadow: " -3px -3px 12px #aaa9a9a2"}}>
+        <h1 className='text-center font-extrabold p-8 font-serif  text-3xl text-[#f7fff9]'>Login</h1>
 <Formik  
        enableReinitialize
        initialValues={{ username: "" ,
@@ -60,12 +60,13 @@ const Login = () => {
      
      {({ values, handleChange, handleBlur, handleSubmit,errors, }) => (
          <Form onSubmit={handleSubmit}>
-            <div className='grid grid-cols-1 px-16 '>
+            <div className='grid grid-cols-1 px-16  place-conten-center place-items-center'>
                 <div>
                     <p className='text-[#f7fff9] text-lg py-3'>Username</p>
                 
             <Field  name="username" className={styles} />
-            {/* style={getStyles(errors, `username`)} */}
+            {/* style={getStyles(errors:string, `username`)} */}
+            
             </div>
             <div>
             <p className='text-[#f7fff9] text-lg py-3'>Password</p>

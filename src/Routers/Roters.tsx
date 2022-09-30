@@ -10,7 +10,7 @@ const Roters = () => {
     <BrowserRouter>
     <Routes>
    
-    <Route path="/" element={<div className='bg-[#aaa9a9a2] max-w-full min-h-screen'><Login /> </div>}/>
+    <Route path="/" element={<div className='bg-gradient-to-r from-indigo-500  max-w-full min-h-screen'><Login /> </div>}/>
     <Route path="/commentSection/:userName" element={<div className='bg-[#f7f7f7] max-w-full min-h-screen'><CommentSection /></div>} />
     
 
