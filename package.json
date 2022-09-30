@@ -19,6 +19,7 @@
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
+    "react-toastify": "^9.0.8",
     "redux": "^4.2.0",
     "redux-deep-persist": "^1.0.6",
     "redux-immer": "^1.0.5",

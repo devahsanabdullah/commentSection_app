@@ -1,13 +1,24 @@
 
 import { ISend } from "../components/SendQuestion";
+export interface SingUp{
+    firstname:string,
+    lastname:string,
+    username:string,
+    password:string,
+    repassword:string
+}
  export interface initial {
     commentView:ISend[]
     changeData:boolean
+    sinuppage:SingUp[]
 }
+
 const initialState:initial= {
    
     commentView:[],
-    changeData:false
+    changeData:false,
+    sinuppage:[]
+    
         
   }
   
@@ -35,6 +46,13 @@ const initialState:initial= {
                 changeData:action.payload.changeData
             
             }
+            case "SINUP_PAGE":
+                return {
+                    ...state,
+    
+                    sinuppage:action.payload.sinuppage
+                
+                }    
         default:
             return state
     }
