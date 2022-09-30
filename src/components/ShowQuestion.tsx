@@ -525,7 +525,7 @@ const ShowQuestion = (props: propstype) => {
                                   <div>
                                     <textarea
                                       placeholder="Add commment"
-                                      defaultValue={data.comment}
+                                      defaultValue={replyData.comment}
                                       onChange={(e) =>
                                         setEditReplyData(e.target.value)
                                       }

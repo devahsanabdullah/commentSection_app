@@ -52,11 +52,15 @@ const Login = () => {
             initialValues={{ username: "", password: "", id: RandomNumber }}
             validationSchema={SinupValdation}
             onSubmit={(values, actions) => {
+              console.log("sing",sinuppage)
 
 
-              let data=sinuppage.find((data)=>data.username&&data.password===values.username&&values.password)
+              let data=sinuppage.find((data)=>{
+                return data.username==values.username&&data.password===values.password
+              })
+             
 
-              if(data?.username&&data.password===values.username&&values.password)
+              if(data?.username==values.username&&data.password===values.password)
               {
                 Navigate(`/commentSection/${values.username}`);
 
